@@ -2,41 +2,37 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <time.h>
-#include "driver/elevio.h"
-#include "driver/order.h"
+// #include "driver/timer.h"
+// #include "driver/elevio.h"
+// #include "driver/order.h"
 #include "driver/controller.h"
-
 
 
 int main(){
     
     elevio_init();
-
-    order_matrix_init();
+    // order_matrix_init();
     
-    printf("=== Example Program ===\n");
+    printf("=== Jstrid's Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
 
-    elevio_motorDirection(DIRN_UP);
+    state = STILL;
     direction_state = UP;
-    state = MOVING;
-    
+    if (elevio_floorSensor() == -1) {
+        elevio_motorDirection(DIRN_UP);
+        state = MOVING;
+        while (1) {
+            if (elevio_floorSensor() != -1) {
+                elevio_motorDirection(DIRN_STOP);
+                state = STILL;
+                break;
+            }
+        }
+    }
 
     while(1){
         int floor = elevio_floorSensor();
         printf("floor: %d \n",floor);
-
-        if(floor == 0){
-            elevio_motorDirection(DIRN_UP);
-            direction_state = UP;
-            state = MOVING;
-        }
-
-        if(floor == N_FLOORS-1){
-            elevio_motorDirection(DIRN_DOWN);
-            direction_state = DOWN;
-            state = MOVING;
-        }
 
 /*         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
@@ -46,8 +42,9 @@ int main(){
         }
  */
 
-        new_order();
+        find_new_order();
         print_order_matrix();
+        order_matrix_logic();
 
         if(elevio_obstruction()){
             elevio_stopLamp(1);
@@ -57,9 +54,7 @@ int main(){
         
         if(elevio_stopButton()){
             elevio_motorDirection(DIRN_STOP);
-            direction_state = NO_DIRECTION;
             state = STILL;
-            break;
         }
 
         

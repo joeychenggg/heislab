@@ -1,16 +1,15 @@
 #include <stdio.h>
 #include "order.h"
-#include "elevio.h"
 
-void order_matrix_init() {
+/* void order_matrix_init() {
     for(int f = 0; f < N_FLOORS; f++) {
         for(int b = 0; b < N_BUTTONS; b++) {
             order_matrix[f][b] = NO_ORDER;
         }
     }
-}
+} */
 
-void new_order() {
+void find_new_order() {
     for(int f = 0; f < N_FLOORS; f++) {
         for(int b = 0; b < N_BUTTONS; b++) {
             int btnPressed = elevio_callButton(f, b);
