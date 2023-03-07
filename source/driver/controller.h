@@ -18,5 +18,5 @@ int zero_order_matrix[N_FLOORS][N_BUTTONS];
 
 int find_orders_above();
 int find_orders_below();
-int check_not_equal_matrix();
+int check_have_orders();
 void order_matrix_logic();

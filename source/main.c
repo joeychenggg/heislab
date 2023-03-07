@@ -34,17 +34,20 @@ int main(){
         int floor = elevio_floorSensor();
         printf("floor: %d \n",floor);
 
+
+        find_new_order(); // ideally a callback func instead of this
+        print_order_matrix();
+        //printf("direction: %d \n",direction_state);
+        order_matrix_logic();
+
 /*         for(int f = 0; f < N_FLOORS; f++){
             for(int b = 0; b < N_BUTTONS; b++){
                 int btnPressed = elevio_callButton(f, b);
                 elevio_buttonLamp(f, b, btnPressed);
             }
         }
- */
 
-        find_new_order();
-        print_order_matrix();
-        order_matrix_logic();
+
 
         if(elevio_obstruction()){
             elevio_stopLamp(1);
@@ -56,12 +59,12 @@ int main(){
             elevio_motorDirection(DIRN_STOP);
             state = STILL;
         }
-
+*/
         
         nanosleep(&(struct timespec){0, 20*1000*1000}, NULL);
     }
 
-    clear_order_matrix();
+    // clear_order_matrix();
 
     return 0;
 }
