@@ -1,5 +1,7 @@
 #pragma once
+#include <stdio.h>
 #include "order.h"
+#include "door.h"
 
 typedef enum {
     DOWN  = 0,

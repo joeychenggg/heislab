@@ -1,7 +1,7 @@
 #pragma once
+#include <stdio.h>
 #include <time.h>
-#include "timer.h"
-
+#include "elevio.h"
 
 typedef enum {
     DOOR_CLOSED = 0,
@@ -10,17 +10,6 @@ typedef enum {
 
 DoorState door_state;
 
-void door_open() {
-    door_state = DOOR_OPEN;
-    time_t start = time(NULL);
-}
+time_t door_open();
 
-void door_close() {
-    while(1) {
-        time_t end = time(NULL);
-        if(difftime(end, start) > 3) {
-            door_state = DOOR_CLOSED;
-            break;
-        }
-    }
-}
+void door_close(time_t start);

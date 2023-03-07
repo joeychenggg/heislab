@@ -13,12 +13,16 @@ int find_orders_above() {
                 state = MOVING;
                 while (1) {
                     find_new_order();
+
+                    printf("floor: %d \n",elevio_floorSensor());
                     print_order_matrix();
+                    printf("direction: %d \n",direction_state);
                     if (target_floor == elevio_floorSensor()) {
                         elevio_motorDirection(DIRN_STOP);
                         state = STILL;
                         target_floor = -1;
                         order_matrix[f][b] = NO_ORDER;
+                        elevio_buttonLamp(f, b, NO_ORDER);
                         break;
                     }
                 }
@@ -40,12 +44,16 @@ int find_orders_below() {
                 state = MOVING;
                 while (1) {
                     find_new_order();
+
+                    printf("floor: %d \n",elevio_floorSensor());
                     print_order_matrix();
+                    printf("direction: %d \n",direction_state);
                     if (target_floor == elevio_floorSensor()) {
                         elevio_motorDirection(DIRN_STOP);
                         state = STILL;
                         target_floor = -1;
                         order_matrix[f][b] = NO_ORDER;
+                        elevio_buttonLamp(f, b, NO_ORDER);
                         break;
                     }
                 }
@@ -73,6 +81,8 @@ void order_matrix_logic() {
             if((direction_state == UP && elevio_floorSensor() != 3) || (elevio_floorSensor() == 0)) {
                 direction_state = UP;
                 if (find_orders_above()) {
+                    elevio_floorIndicator(elevio_floorSensor());
+                    door_close(door_open());
                     return;
                 } else {
                     direction_state = DOWN;
@@ -81,6 +91,8 @@ void order_matrix_logic() {
             } else if ((direction_state == DOWN && elevio_floorSensor() != 0) || (elevio_floorSensor() == 3)) {
                 direction_state = DOWN;
                 if (find_orders_below()) {
+                    elevio_floorIndicator(elevio_floorSensor());
+                    door_close(door_open());
                     return;
                 } else {
                     direction_state = UP;
@@ -88,4 +100,5 @@ void order_matrix_logic() {
             }
         }
     }
+    // elevio_floorIndicator(elevio_floorSensor());
 }
