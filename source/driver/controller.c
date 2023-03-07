@@ -1,5 +1,6 @@
 #include "controller.h"
 
+int zero_order_matrix[N_FLOORS][N_BUTTONS] = {{NO_ORDER}};
 
 int find_orders_above() {
     for(int f = elevio_floorSensor() + 1; f < N_FLOORS; f++) {
@@ -47,8 +48,19 @@ int find_orders_below() {
     return 0;
 }
 
+int check_not_equal_matrix() {
+    for(int f = 0; f < N_FLOORS; f++) {
+        for(int b = 0; b < N_BUTTONS; b++) {
+            if (order_matrix[f][b] != zero_order_matrix[f][b]) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
 void order_matrix_logic() {
-    if (state == STILL && order_matrix != zero_order_matrix) { // and we have orders in the order_matrix, and direction_state != NO_DIRECTION
+    if (state == STILL && check_not_equal_matrix()) { // and we have orders in the order_matrix, and direction_state != NO_DIRECTION
         while (1) {
             if(direction_state == UP && elevio_floorSensor() != 3) {
                 if (find_orders_above()) {

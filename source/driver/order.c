@@ -9,6 +9,8 @@
     }
 } */
 
+int order_matrix[N_FLOORS][N_BUTTONS] = {{NO_ORDER}};
+
 void find_new_order() {
     for(int f = 0; f < N_FLOORS; f++) {
         for(int b = 0; b < N_BUTTONS; b++) {

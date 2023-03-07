@@ -13,7 +13,7 @@ typedef enum {
     ORDER    = 1
 } OrderState;
 
-int order_matrix[N_FLOORS][N_BUTTONS] = {{NO_ORDER}};
+int order_matrix[N_FLOORS][N_BUTTONS];
 
 // void order_matrix_init();
 void find_new_order();
