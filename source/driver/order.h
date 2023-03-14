@@ -4,11 +4,6 @@
 #define N_DOOR_STATES 2
 
 typedef enum {
-    DOOR_CLOSED   = 0,
-    DOOR_OPEN     = 1
-} DoorState;
-
-typedef enum {
     NO_ORDER = 0,
     ORDER    = 1
 } OrderState;

@@ -4,7 +4,7 @@ int zero_order_matrix[N_FLOORS][N_BUTTONS] = {{NO_ORDER}};
 
 int find_orders_above() {
     int button_precedence[N_BUTTONS] = {0, 2, 1};
-    for(int f = elevio_floorSensor() + 1; f < N_FLOORS; f++) {
+    for(int f = elevio_floorSensor(); f < N_FLOORS; f++) {
         for(int i = 0; i < N_BUTTONS; i++) {
             int b = button_precedence[i];
             if(order_matrix[f][b] == ORDER) {
@@ -19,6 +19,7 @@ int find_orders_above() {
                         state = STILL;
                         target_floor = -1;
                         order_matrix[f][b] = NO_ORDER;
+                        elevio_buttonLamp(f, b, NO_ORDER);
                         break;
                     }
                 }
@@ -31,7 +32,7 @@ int find_orders_above() {
 
 int find_orders_below() {
     int button_precedence[N_BUTTONS] = {1, 2, 0};
-    for(int f = elevio_floorSensor() - 1; f > -1; f--) {
+    for(int f = elevio_floorSensor(); f > -1; f--) {
         for(int i = 0; i < N_BUTTONS; i++) {
             int b = button_precedence[i];
             if(order_matrix[f][b] == ORDER) {
@@ -46,6 +47,7 @@ int find_orders_below() {
                         state = STILL;
                         target_floor = -1;
                         order_matrix[f][b] = NO_ORDER;
+                        elevio_buttonLamp(f, b, NO_ORDER);
                         break;
                     }
                 }
@@ -73,6 +75,8 @@ void order_matrix_logic() {
             if((direction_state == UP && elevio_floorSensor() != 3) || (elevio_floorSensor() == 0)) {
                 direction_state = UP;
                 if (find_orders_above()) {
+                    elevio_floorIndicator(elevio_floorSensor());
+                    door_close(door_open());
                     return;
                 } else {
                     direction_state = DOWN;
@@ -81,6 +85,8 @@ void order_matrix_logic() {
             } else if ((direction_state == DOWN && elevio_floorSensor() != 0) || (elevio_floorSensor() == 3)) {
                 direction_state = DOWN;
                 if (find_orders_below()) {
+                    elevio_floorIndicator(elevio_floorSensor());
+                    door_close(door_open());
                     return;
                 } else {
                     direction_state = UP;

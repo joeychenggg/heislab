@@ -12,6 +12,8 @@ int main(){
     
     elevio_init();
     // order_matrix_init();
+    clear_order_matrix();
+    elevio_floorIndicator(elevio_floorSensor());
     
     printf("=== Jstrid's Program ===\n");
     printf("Press the stop button on the elevator panel to exit\n");
